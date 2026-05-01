@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartMail Guardian</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h1>📧 SmartMail</h1>
+        <span>Guardian AI</span>
+      </div>
+
+      <nav class="menu">
+        <button class="menu-item active" data-filter="ALL">📥 Inbox</button>
+        <button class="menu-item" data-filter="IMPORTANT">⭐ Important</button>
+        <button class="menu-item" data-filter="SCAM">⚠ Scam</button>
+        <button class="menu-item" data-filter="PROMOTION">🛍 Promotions</button>
+        <button class="menu-item" data-filter="TRASH">🗑 Trash</button>
+      </nav>
+    </aside>
+
+    <!-- EMAIL LIST -->
+    <main class="email-list">
+
+      <div class="topbar">
+        <h2>Inbox</h2>
+        <input type="text" placeholder="Search emails..." />
+      </div>
+
+      <div class="emails"></div>
+    </main>
+
+    <!-- AI PANEL -->
+    <section class="analysis-panel">
+
+      <div class="analysis-header">
+        <h2>AI Analysis</h2>
+      </div>
+
+      <div class="risk-box">
+        <span class="risk-label">Threat Score</span>
+        <h1>0%</h1>
+        <p>Unknown</p>
+      </div>
+
+      <div class="analysis-section" id="summary-section">
+        <h3>Summary</h3>
+        <p>No email selected.</p>
+      </div>
+
+      <div class="analysis-section" id="indicators-section">
+        <h3>Threat Indicators</h3>
+        <ul></ul>
+      </div>
+
+      <div class="analysis-section" id="reply-section">
+        <h3>Suggested Reply</h3>
+        <div class="reply-box">No reply.</div>
+      </div>
+
+
+      <button class="analyze-btn">
+        ✨ Analyze with AI
+      </button>
+
+    </section>
+
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
