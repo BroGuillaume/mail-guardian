@@ -116,6 +116,24 @@ function renderEmails(list = emails) {
       <p class="sender">${email.sender}</p>
       <p class="preview">${email.preview}</p>
     `;
+    // Add reset button only if email is not UNKNOWN
+    if (email.category && email.category !== "UNKNOWN") {
+      const resetBtn = document.createElement("button");
+      resetBtn.classList.add("reset-btn");
+      resetBtn.textContent = "Reset";
+
+      resetBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent selecting the email
+
+        resetEmail(email);
+        saveEmails();
+        renderEmails();
+        selectEmail(currentEmailIndex);
+      });
+
+      card.appendChild(resetBtn);
+    }
+
 
     card.addEventListener("click", () => {
       selectEmail(index, list);
@@ -207,6 +225,7 @@ document.querySelectorAll(".menu-item").forEach(btn => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
+  loadEmails();
   renderEmails();
   selectEmail(0);
 
@@ -236,6 +255,8 @@ document.addEventListener("DOMContentLoaded", () => {
         reply: result.reply
       });
 
+      saveEmails();
+
       // RE-RENDER LIST
       renderEmails();
       selectEmail(currentEmailIndex);
@@ -248,4 +269,51 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.textContent = "✨ Analyze with AI";
     btn.disabled = false;
   });
+
+  document.querySelector(".reset-all-btn").addEventListener("click", () => {
+    if (confirm("Reset ALL emails?")) {
+      resetAllEmails();
+    }
+  });
+
 });
+
+
+function saveEmails() {
+  localStorage.setItem("emailsData", JSON.stringify(emails));
+}
+
+function loadEmails() {
+  const saved = localStorage.getItem("emailsData");
+  if (!saved) return;
+
+  const parsed = JSON.parse(saved);
+
+  parsed.forEach((savedEmail, i) => {
+    Object.assign(emails[i], savedEmail);
+  });
+}
+
+function resetEmail(email) {
+  email.category = "UNKNOWN";
+  email.risk = 0;
+  email.riskLabel = "Unknown";
+  email.summary = "This email has not been analyzed yet.";
+  email.indicators = [];
+  email.reply = "No reply available.";
+}
+
+function resetAllEmails() {
+  emails.forEach(email => {
+    email.category = "UNKNOWN";
+    email.risk = 0;
+    email.riskLabel = "Unknown";
+    email.summary = "This email has not been analyzed yet.";
+    email.indicators = [];
+    email.reply = "No reply available.";
+  });
+
+  saveEmails();
+  renderEmails();
+  selectEmail(0);
+}
