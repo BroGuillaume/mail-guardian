@@ -107,9 +107,22 @@ body {
 
 .email-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
+
+.email-header h3 {
+  flex: 1; /* prend toute la place à gauche */
+}
+
+.email-header .tag {
+  margin-right: 8px; /* espace entre status et flèche */
+}
+
+.email-header .expand-btn {
+  margin-left: 0;
+}
+
 
 .sender {
   color: #94a3b8;
@@ -252,4 +265,50 @@ body {
 
 .reset-all-btn:hover {
   background: #dc2626;
+}
+
+.email-card {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.email-card.expanded {
+  background: #111827;
+  padding-bottom: 10px;
+}
+
+.email-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.expand-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 6px;
+  color: #555;
+}
+
+.expand-btn:hover {
+  color: #000;
+}
+
+.full-content {
+  margin-top: 10px;
+  padding: 10px;
+  background: #111827;
+  border-radius: 6px;
+}
+
+.full-content.hidden {
+  display: none;
+}
+
+.full-content pre {
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 13px;
 }

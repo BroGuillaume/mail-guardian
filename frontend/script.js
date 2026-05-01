@@ -111,11 +111,51 @@ function renderEmails(list = emails) {
         <span class="tag ${categoryClass}">
             ${category}
         </span>
+        <button class="expand-btn" data-expanded="false">▼</button>
       </div>
 
       <p class="sender">${email.sender}</p>
       <p class="preview">${email.preview}</p>
+
+      <div class="full-content hidden">
+        <pre>${email.content}</pre>
+      </div>
     `;
+
+
+    const expandBtn = card.querySelector(".expand-btn");
+    const fullContent = card.querySelector(".full-content");
+
+    expandBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const expanded = expandBtn.dataset.expanded === "true";
+
+      if (expanded) {
+        // Collapse
+        fullContent.classList.add("hidden");
+        expandBtn.textContent = "▼";
+        expandBtn.dataset.expanded = "false";
+        card.classList.remove("expanded");
+        email.expanded = false;
+      } else {
+        // Expand
+        fullContent.classList.remove("hidden");
+        expandBtn.textContent = "▲";
+        expandBtn.dataset.expanded = "true";
+        card.classList.add("expanded");
+        email.expanded = true;
+      }
+    });
+
+    if (email.expanded) {
+      card.classList.add("expanded");
+      card.querySelector(".full-content").classList.remove("hidden");
+      card.querySelector(".expand-btn").textContent = "▲";
+      card.querySelector(".expand-btn").dataset.expanded = "true";
+    }
+
+
     // Add reset button only if email is not UNKNOWN
     if (email.category && email.category !== "UNKNOWN") {
       const resetBtn = document.createElement("button");
@@ -301,6 +341,7 @@ function resetEmail(email) {
   email.summary = "This email has not been analyzed yet.";
   email.indicators = [];
   email.reply = "No reply available.";
+  email.expanded = false;
 }
 
 function resetAllEmails() {
@@ -311,9 +352,29 @@ function resetAllEmails() {
     email.summary = "This email has not been analyzed yet.";
     email.indicators = [];
     email.reply = "No reply available.";
+    email.expanded = false;
   });
 
   saveEmails();
   renderEmails();
   selectEmail(0);
 }
+
+
+function openEmailModal(email) {
+  const modal = document.getElementById("email-modal");
+  const content = document.getElementById("modal-email-content");
+
+  content.textContent = email.content;
+  modal.classList.remove("hidden");
+}
+
+document.querySelector(".close-modal").addEventListener("click", () => {
+  document.getElementById("email-modal").classList.add("hidden");
+});
+
+document.getElementById("email-modal").addEventListener("click", (e) => {
+  if (e.target.id === "email-modal") {
+    document.getElementById("email-modal").classList.add("hidden");
+  }
+});
